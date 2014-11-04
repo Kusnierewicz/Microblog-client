@@ -36,9 +36,22 @@ class MicroBlogger
   	  case command
   	    when 't' then tweet(parts[1..-1].join(" "))
   	    when 'q' then puts "Goodbye!"
+  	    when 'dm' then dm(parts[1], parts[2..-1].join(" "))
   	    else
   	      puts "Sorry, I don't know how to #{command}"
   	  end 
+  	end
+  end
+
+  def dm(target, message)
+  	puts "Trying to send #{target} this message:"
+  	puts message
+  	screen_names = @client.followers.collect { |followers| @client.user(follower).screen_name }
+  	if screen_names.include?(target)
+      message = "d @#{target} #{message}"
+  	  tweet(message)
+  	else
+  	  puts "target is not following you!"
   	end
   end
 
